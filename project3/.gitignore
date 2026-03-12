@@ -1,0 +1,18 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.venv/
+venv/
+ENV/
+
+# Project Outputs (Automated)
+security_report.md
+request_analysis.png
+request_counts.png
+
+# IDEs
+.vscode/
+.idea/
