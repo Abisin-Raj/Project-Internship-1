@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results | Nova</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ffffff;
+            --bg: #000000;
+            --card-bg: #111111;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --border: #333333;
+            --danger: #ffffff;
+            --warning: #aaaaaa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 4rem 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+
+        .target-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .finding-card {
+            background: var(--card-bg);
+            border-radius: 0.25rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            border-left: 4px solid #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: transform 0.2s ease;
+        }
+
+        .finding-card:hover {
+            transform: translateX(5px);
+        }
+
+        .finding-card.critical { border-left-color: #ffffff; }
+        .finding-card.high { border-left-color: #888888; }
+
+        .finding-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .finding-info p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge.critical { background: #ffffff; color: #000000; }
+        .badge.high { background: #888888; color: #000000; }
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem;
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .empty-state h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="logo">NOVA</a>
+            <div class="target-info">Scanning: {{ url }}</div>
+        </div>
+
+        <div class="results-grid">
+            {% if results %}
+                {% for result in results %}
+                    <div class="finding-card {{ result.severity.lower() }}">
+                        <div class="finding-info">
+                            <h3>{{ result.vulnerability }}</h3>
+                            <p><strong>Detected at:</strong> {{ result.url }}</p>
+                            <p><strong>Form Action:</strong> {{ result.details.action }}</p>
+                        </div>
+                        <span class="badge {{ result.severity.lower() }}">{{ result.severity }}</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <h2>No Vulnerabilities Found</h2>
+                    <p>The target seems secure based on current scan definitions.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="margin-top: 3rem; text-align: center;">
+            <a href="/" class="back-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>
